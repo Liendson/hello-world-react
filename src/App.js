@@ -58,9 +58,11 @@ export default function App() {
     return listaDePerguntas.filter(p => p.respostaSelecionada).length
   }
   const finalizarQuiz = () => {
+    // Regra de negócio para verificar se todas as perguntas foram respondidas
     if (getQuantidadePerguntasRespondidas() === listaDePerguntas.length) {
       const questoesCorretas = listaDePerguntas.filter(p => p.respostaSelecionada === p.resposta)
       alert(`Você acertou ${questoesCorretas.length} de ${listaDePerguntas.length} perguntas!`);
+      // Reseta a lista após finalizar o fluxo
       setListaDePerguntas(listaDePerguntas.map(p => {
         p.respostaSelecionada = null;
         return p;
@@ -68,11 +70,18 @@ export default function App() {
     } else alert(`Responda todo o questionário!`)
   };
   const alterarResposta = (resposta, id) => {
-    setListaDePerguntas(listaDePerguntas.map((p) => {
-      if (p.id === id) { p.respostaSelecionada = resposta }
-      return p;
-    }));
+    // Essa regra não faz sentido
+    if (listaDePerguntas.filter(p => p.id === id && p.respostaSelecionada).length) {
+      alert('Resposta já respondida');
+    } else {
+      // seta a resposta selecionada no item usando o hook useState
+      setListaDePerguntas(listaDePerguntas.map((p) => {
+        if (p.id === id) { p.respostaSelecionada = resposta }
+        return p;
+      }));
+    }
   }
+  // Isso aqui foi um template css de um card que eu peguei na internet e tive que transformar em .jsx
   const getBackgroundDivs = () => {
     return (
       <div className="background">
@@ -96,6 +105,7 @@ export default function App() {
   };
   return (
     <div className="App">
+      {/* componente do header */}
       <HeaderComponent></HeaderComponent>
       <div className="app">
         <p>Questões Respondidas: {listaDePerguntas.filter(p => p.respostaSelecionada).length}</p>
@@ -103,6 +113,7 @@ export default function App() {
           return p.respostaSelecionada && <div><p>{`${i + 1}) ${p.respostaSelecionada}`}</p></div>
         })}
       </div>
+      {/* Renderização de acordo com a quantidade de perguntas da lista, mostrando um botão pra cada opção */}
       {listaDePerguntas.map(pergunta => {
         return (
           <div className="app">
@@ -116,7 +127,9 @@ export default function App() {
         )
       })
       }
+      {/* Ao finalizar, realiza a contagem de quantas respostas foram corretas */}
       <button className="btn mb-3" onClick={finalizarQuiz}><span>Finalizar Quiz</span></button>
+      {/* componente do footer */}
       <FooterComponent></FooterComponent>
     </div>
   );
