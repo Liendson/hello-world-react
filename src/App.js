@@ -60,11 +60,15 @@ export default function App() {
   const finalizarQuiz = () => {
     if (getQuantidadePerguntasRespondidas() === listaDePerguntas.length) {
       const questoesCorretas = listaDePerguntas.filter(p => p.respostaSelecionada === p.resposta)
-      alert(`Você acertou ${questoesCorretas.length} de ${listaDePerguntas.length} perguntas!`)
+      alert(`Você acertou ${questoesCorretas.length} de ${listaDePerguntas.length} perguntas!`);
+      setListaDePerguntas(listaDePerguntas.map(p => {
+        p.respostaSelecionada = null;
+        return p;
+      }));
     } else alert(`Responda todo o questionário!`)
   };
   const alterarResposta = (resposta, id) => {
-    setListaDePerguntas(listaDePerguntas.map((p, i) => {
+    setListaDePerguntas(listaDePerguntas.map((p) => {
       if (p.id === id) { p.respostaSelecionada = resposta }
       return p;
     }));
