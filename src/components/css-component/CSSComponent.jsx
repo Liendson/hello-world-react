@@ -5,6 +5,13 @@ export default function CSSComponent() {
     <div>
       <img className="img" src={img} alt="react-img" />
       <p>O CSS está vindo de um arquivo .css!</p>
+      <p style={{
+        color: '#ff0000',
+        backgroundColor: '#0000ff',
+        textAlign: 'center',
+        height: '200px',
+        width: '200px'
+      }}>Texto Centralizado</p>
     </div>
   );
 }
