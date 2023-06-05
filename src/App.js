@@ -1,136 +1,20 @@
 import './App.css';
-import HeaderComponent from './components/header-component/HeaderComponent';
-import FooterComponent from './components/footer-component/FooterComponent';
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import HomePage from './pages/home-page/HomePage';
+import ListarAlunosPage from './pages/alunos/listar/ListarAlunosPage';
+import CadastrarAlunosPage from './pages/alunos/cadastrar/CadastrarAlunosPage';
 
 export default function App() {
-  const [listaDePerguntas, setListaDePerguntas] = useState([
-    {
-      id: 1,
-      nome: "O que é Front-end?",
-      respostaSelecionada: null,
-      resposta: 'Parte de um sistema que é visível e interativa ao usuário.',
-      opcoes: [
-        'Parte de um sistema que é oculta ao usuário.',
-        'Parte de um sistema que é visível e interativa ao usuário.',
-        'Parte lógica que recebe as regras de negócio.',
-        'Nenhuma das alternativas anteriores.'
-      ]
-    },
-    {
-      id: 2,
-      nome: "O que é React.js?",
-      respostaSelecionada: null,
-      resposta: 'Uma poderosa biblioteca Javascript.',
-      opcoes: [
-        'Uma poderosa biblioteca Javascript.',
-        'Uma linguagem de programação.',
-        'Um servidor de cloud.',
-        'Todas as alternativas anteriores.'
-      ]
-    },
-    {
-      id: 3,
-      nome: "Quais são as principais tecnologias do mundo Front-end?",
-      respostaSelecionada: null,
-      resposta: 'HTML, CSS e Javascript.',
-      opcoes: [
-        'HTML, CSS e Javascript.',
-        'Java, Javascript.',
-        '204, 200 e 203',
-        'Todas as alternativas anteriores.'
-      ],
-    },
-    {
-      id: 4,
-      nome: "Entre Vue.js, Angular e React.js, qual o melhor?",
-      respostaSelecionada: null,
-      resposta: 'Aquele que paga teu salário.',
-      opcoes: [
-        'Vue.js',
-        'Angular',
-        'React.js',
-        'Aquele que paga teu salário.'
-      ],
-    },
-  ])
-  const getQuantidadePerguntasRespondidas = () => {
-    return listaDePerguntas.filter(p => p.respostaSelecionada).length
-  }
-  const finalizarQuiz = () => {
-    // Regra de negócio para verificar se todas as perguntas foram respondidas
-    if (getQuantidadePerguntasRespondidas() === listaDePerguntas.length) {
-      const questoesCorretas = listaDePerguntas.filter(p => p.respostaSelecionada === p.resposta)
-      alert(`Você acertou ${questoesCorretas.length} de ${listaDePerguntas.length} perguntas!`);
-      // Reseta a lista após finalizar o fluxo
-      setListaDePerguntas(listaDePerguntas.map(p => {
-        p.respostaSelecionada = null;
-        return p;
-      }));
-    } else alert(`Responda todo o questionário!`)
-  };
-  const alterarResposta = (resposta, id) => {
-    // Essa regra não faz sentido
-    if (listaDePerguntas.filter(p => p.id === id && p.respostaSelecionada).length) {
-      alert('Resposta já respondida');
-    } else {
-      // seta a resposta selecionada no item usando o hook useState
-      setListaDePerguntas(listaDePerguntas.map((p) => {
-        if (p.id === id) { p.respostaSelecionada = resposta }
-        return p;
-      }));
-    }
-  }
-  // Isso aqui foi um template css de um card que eu peguei na internet e tive que transformar em .jsx
-  const getBackgroundDivs = () => {
-    return (
-      <div className="background">
-        <div className="tiles">
-          <div className="tile tile-1"></div>
-          <div className="tile tile-2"></div>
-          <div className="tile tile-3"></div>
-          <div className="tile tile-4"></div>
-          <div className="tile tile-5"></div>
-          <div className="tile tile-6"></div>
-          <div className="tile tile-7"></div>
-          <div className="tile tile-8"></div>
-          <div className="tile tile-9"></div>
-          <div className="tile tile-10"></div>
-        </div>
-        <div className="line line-1"></div>
-        <div className="line line-2"></div>
-        <div className="line line-3"></div>
-      </div>
-    );
-  };
   return (
     <div className="App">
-      {/* componente do header */}
-      <HeaderComponent></HeaderComponent>
-      <div className="app">
-        <p>Questões Respondidas: {listaDePerguntas.filter(p => p.respostaSelecionada).length}</p>
-        {listaDePerguntas.map((p, i) => {
-          return p.respostaSelecionada && <div><p>{`${i + 1}) ${p.respostaSelecionada}`}</p></div>
-        })}
-      </div>
-      {/* Renderização de acordo com a quantidade de perguntas da lista, mostrando um botão pra cada opção */}
-      {listaDePerguntas.map(pergunta => {
-        return (
-          <div className="app">
-            <div className="card">
-              <h4>{pergunta.nome}</h4>
-              {pergunta.opcoes.map((opcao, i) => (<p>{opcao}<button className="btn mb-1" onClick={() => alterarResposta(opcao, pergunta.id)} key={i}>Selecionar</button></p>))}
-              <div className="shine"></div>
-              {getBackgroundDivs()}
-            </div>
-          </div>
-        )
-      })
-      }
-      {/* Ao finalizar, realiza a contagem de quantas respostas foram corretas */}
-      <button className="btn mb-3" onClick={finalizarQuiz}><span>Finalizar Quiz</span></button>
-      {/* componente do footer */}
-      <FooterComponent></FooterComponent>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage></HomePage>}></Route>
+          <Route path="/alunos" element={<ListarAlunosPage></ListarAlunosPage>}></Route>
+          <Route path="/alunos/cadastrar" element={<CadastrarAlunosPage></CadastrarAlunosPage>}></Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
