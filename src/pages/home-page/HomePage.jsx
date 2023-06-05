@@ -9,13 +9,21 @@ export default function HomePage() {
       nome: "Listar Alunos",
       path: "alunos"
     },
+    {
+      nome: "Cadastrar Alunos",
+      path: "alunos/cadastrar"
+    }
   ])
   return (
     <div>
       <HeaderComponent></HeaderComponent>
       <div className="app">
         <p>Menu:</p>
-        {menu.map((menu) => {return <NavLink to={menu.path}>{menu.nome}</NavLink>})}
+        {menu.map((menu) => {
+          return <ul>
+            <li><NavLink to={menu.path}>{menu.nome}</NavLink></li>
+          </ul>
+        })}
       </div>
     </div>
   );

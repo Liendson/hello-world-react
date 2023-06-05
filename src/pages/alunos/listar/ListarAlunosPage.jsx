@@ -3,7 +3,7 @@ import './listar-alunos.css';
 import React, { useEffect, useState } from 'react';
 import logo512 from '../../../assets/logo512.png';
 
-const url = "http://localhost:8080/aluno-online"
+const url = "https://randomuser.me/api/"
 
 export default function ListarAlunosPage() {
   const [listaDeAlunos, setListaDeAlunos] = useState([]);
@@ -12,10 +12,10 @@ export default function ListarAlunosPage() {
     async function fetchData() {
       const res = await fetch(url);
       const data = await res.json();
-      setListaDeAlunos(data);
+      setListaDeAlunos(data.results);
     }
     fetchData();
-  })
+  }, [])
 
   return (
     <div>
@@ -24,12 +24,11 @@ export default function ListarAlunosPage() {
       </header>
       {listaDeAlunos.map(p => {
         return <div className="card">
-          <h4>Nome do Aluno: {p.nome}</h4>
-          <div>Curso do Aluno: {p.curso}</div>
+          <h4>Nome do Aluno: {p.name.first}</h4>
+          <div>Código do Curso do Aluno: {p.cell}</div>
           <div>Email do Aluno: {p.email}</div>
         </div>
       })}
-      
     </div>
   );
 }
